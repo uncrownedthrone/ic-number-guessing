@@ -4,17 +4,31 @@
 // DONE: if user guesses incorrect number, display message
 
 // DONE: add a counter to see how many guesses
-// TODO: limit number of guesses to 7
-// TODO: add a too high/too low message
+// DONE: limit number of guesses to 7
+// DONE: add a too high/too low message
 
-const qs = (element) => document.querySelector(element)
+// TODO: add a message if user guesses picked number
+
+const qs = (e) => document.querySelector(e)
 
 let randomNumber = 0
 let numberOfGuesses = 0
+let guessedNumbers = []
 
 const main = () => {
   randomNumber = Math.ceil(Math.random() * 10)
   console.log(randomNumber)
+}
+
+// param: the number to check
+// return: true of false
+const hasUserGuessedNumber = (numberUserHasGuess) => {
+  for (let i = 0; i < guessedNumbers.length; i++) {
+    if (guessedNumbers[i] === numberUserHasGuess) {
+      return true
+    }
+  }
+  return false
 }
 
 const checkTheNumbers = () => {
@@ -22,13 +36,12 @@ const checkTheNumbers = () => {
   // parseInt (turned string to number)
   const userGuess = parseInt(qs('input').value)
   numberOfGuesses++
-  console.log(userGuess)
-  console.log(typeof userGuess)
-  console.log(typeof randomNumber)
+  hasUserGuessedNumber(userGuess)
+  guessedNumbers.push(userGuess)
+  console.log(guessedNumbers)
   // check if the number === randomNumber
   if (randomNumber === userGuess && numberOfGuesses <= 7) {
     // if yes, show success message
-    console.log('success')
     qs('.output-message').textContent =
       'Success! You guessed the number in ' + numberOfGuesses + ' tries!'
   } else if (numberOfGuesses >= 7) {
@@ -49,7 +62,6 @@ const checkTheNumbers = () => {
       qs('.output-message').classList.remove('too-low')
     }
   }
-  console.log('nope')
   qs('.output-message').textContent = 'Nope. Try again!'
 }
 
